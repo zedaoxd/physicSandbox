@@ -26,6 +26,7 @@ public class AirPlaneMoviment : MonoBehaviour
     [SerializeField] private Transform graphics;
     [SerializeField] private float maxVisualRollAngle = 60;
     [SerializeField] private float visualRollAcc = 2;
+    [SerializeField] private GameObject elice;
 
     private void Awake()
     {
@@ -69,8 +70,9 @@ public class AirPlaneMoviment : MonoBehaviour
             _steerInput.x = 0;
             torque.x = 0;
         }
+
         _rb.AddRelativeTorque(torque);
-        
+
         // Force no Z rotation
         var correctedRot = _rb.rotation.eulerAngles;
         correctedRot.z = 0;
@@ -99,6 +101,7 @@ public class AirPlaneMoviment : MonoBehaviour
     {
         var moveForce = transform.forward * thrust;
         _rb.AddForce(moveForce);
+        elice.transform.Rotate(new Vector3(-200, 0, 0) * thrust);
     }
 
     public void SetSteerInput(Vector2 newFrameInput)
