@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(AirPlaneMoviment), typeof(BombLauncher))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float cooldown = 1;
     private AirPlaneMoviment airPlane;
     private BombLauncher bombLauncher;
 
