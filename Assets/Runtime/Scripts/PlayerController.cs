@@ -3,26 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AirPlaneMoviment), typeof(BombLauncher))]
+[RequireComponent(typeof(AirPlaneMoviment))]
 public class PlayerController : MonoBehaviour
 {
-    private AirPlaneMoviment airPlane;
-    private BombLauncher bombLauncher;
+    [SerializeField] private ROFWeapon weapon;
+    [SerializeField] private ROFWeapon[] weapons;
+    private AirPlaneMoviment airPlaneMovement;
 
     private void Awake()
     {
-        airPlane = GetComponent<AirPlaneMoviment>();
-        bombLauncher = GetComponent<BombLauncher>();
+        airPlaneMovement = GetComponent<AirPlaneMoviment>();
+
+        if (weapons[0] != null)
+        {
+            weapon = weapons[0];
+        }
     }
 
     private void Update()
     {
         var frameInput = new Vector2(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
-        airPlane.SetSteerInput(frameInput);
+        airPlaneMovement.SetSteerInput(frameInput);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (weapon != null)
         {
-            bombLauncher.TryShoot();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                weapon.StartShoot();
+            }
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                weapon.StopShoot();
+            }
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            weapon = weapon == weapons[0] ? weapons[1] : weapons[0];
+        }
+
     }
 }
